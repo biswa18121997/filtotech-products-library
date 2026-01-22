@@ -14,7 +14,7 @@ const limiter = rateLimit({
 	ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
 })
 app.use(limiter);
-var whitelist = ['http://example1.com', 'http://example2.com']
+var whitelist = ['http://example1.com', 'http://example2.com','*']
 var corsOptions = {
   origin: function (origin: any, callback: any) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -24,7 +24,7 @@ var corsOptions = {
     }
   }
 }
-app.use(cors(corsOptions));
+app.use(cors());
 const MONGODB_URI : string= process.env.MONGODB_CLUSTER_URI as string;
 console.log(MONGODB_URI);
 app.listen(PORT,()=>{
