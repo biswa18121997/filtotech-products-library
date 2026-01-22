@@ -13,18 +13,25 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 	ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
 })
+const corsOptions = {
+  origin: '*', // This allows all domains
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(limiter);
-var whitelist = ['http://example1.com', 'http://example2.com','*']
-var corsOptions = {
-  origin: function (origin: any, callback: any) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-app.use(cors());
+//var whitelist = ['http://example1.com', 'http://example2.com','*']
+// var corsOptions = {
+//   origin: function (origin: any, callback: any) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
+// app.use(cors());
 const MONGODB_URI : string= process.env.MONGODB_CLUSTER_URI as string;
 console.log(MONGODB_URI);
 app.listen(PORT,()=>{
